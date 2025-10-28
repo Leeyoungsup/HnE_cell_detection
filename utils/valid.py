@@ -72,7 +72,7 @@ Best mAP@0.5:0.95: {max(val_maps):.4f} (Epoch {val_maps.index(max(val_maps))+1})
     plt.close()
 
 
-def visualize_ground_truth_and_prediction_separately(model, dataset, idx=0, conf_threshold=0.5, iou_threshold=0.3, epoch=None, save_dir=None):
+def visualize_ground_truth_and_prediction_separately(model, dataset, idx=0, conf_threshold=0.1, iou_threshold=0.3, epoch=None, save_dir=None):
     """실제 라벨과 예측 라벨을 subplot으로 좌우에 표시하는 함수"""
     if len(dataset) <= idx:
         print(f"경고: 데이터셋이 비어 있거나 idx {idx}가 데이터셋 크기({len(dataset)})보다 큽니다.")
@@ -83,10 +83,17 @@ def visualize_ground_truth_and_prediction_separately(model, dataset, idx=0, conf
     
     # 하나의 figure에 2개의 subplot 생성 (1행 2열)
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 8))
-    img = img.cpu() / 255.
+    img = img.cpu()/255.
     # Subplot 1: Ground Truth (실제 라벨)
     ax1.imshow(img.permute(1, 2, 0).cpu().numpy())
-    
+    class_names = {
+            0: "Neutrophil",
+            1: "Epithelial",
+            2: "Lymphocyte",
+            3: "Plasma",
+            4: "Eosinophil",
+            5: "Connective tissue"
+        }
     for i in range(len(cls)):
         class_id = cls[i].item()
         x_center, y_center, w, h = box[i].tolist()
@@ -95,14 +102,18 @@ def visualize_ground_truth_and_prediction_separately(model, dataset, idx=0, conf
         y = (y_center - h/2) * img.shape[1]
         w_box = w * img.shape[2]
         h_box = h * img.shape[1]
-        if class_id == 0: #class_0
+        if class_id == 0: #Neutrophil
+            color = 'orange'
+        elif class_id == 1: #Epithelial
             color = 'green'
-        elif class_id == 1: #class_1+
-            color = 'yellow'
-        elif class_id == 2: #Class_2+
-            color = 'blue'
-        else: #Class_3+
+        elif class_id == 2: #Lymphocyte
             color = 'red'
+        elif class_id == 3: #Plasma
+            color = 'skyblue'
+        elif class_id == 4: #Eosinophil
+            color = 'blue'
+        elif class_id == 5: #Connective tissue
+            color = 'yellow'
         # 중심점 표시
         # 중심점 좌표 계산
         center_x = int(x + w_box / 2)
@@ -133,16 +144,20 @@ def visualize_ground_truth_and_prediction_separately(model, dataset, idx=0, conf
                 x1, y1, x2, y2 = x1.item(), y1.item(), x2.item(), y2.item()
                 w_pred = x2 - x1
                 h_pred = y2 - y1
-                
-                if cls_id.item() == 0: #class_0
+
+                if cls_id.item() == 0: #Neutrophil
+                    color = 'orange'
+                elif cls_id.item() == 1: #Epithelial
                     color = 'green'
-                elif cls_id.item() == 1: #class_1+
-                    color = 'yellow'
-                elif cls_id.item() == 2: #Class_2+
-                    color = 'blue'
-                else: #Class_3+
+                elif cls_id.item() == 2: #Lymphocyte
                     color = 'red'
-                
+                elif cls_id.item() == 3: #Plasma
+                    color = 'skyblue'
+                elif cls_id.item() == 4: #Eosinophil
+                    color = 'blue'
+                elif cls_id.item() == 5: #Connective tissue
+                    color = 'yellow'
+                # 중심점 표시
                 center_x = (x1 + x2)//2
                 center_y = (y1 + y2)//2
                 ax2.scatter(center_x, center_y, facecolors='none',  s=20, marker='o', edgecolors=color, linewidths=1)
@@ -167,10 +182,12 @@ def visualize_ground_truth_and_prediction_separately(model, dataset, idx=0, conf
     
     # 범례 추가
     legend_elements = [
-        patches.Patch(color='green', label='Class_0'),
-        patches.Patch(color='yellow', label='Class_1+'),
-        patches.Patch(color='blue', label='Class_2+'),
-        patches.Patch(color='red', label='Class_3+'),
+        patches.Patch(color='orange', label='Neutrophil'),
+        patches.Patch(color='green', label='Epithelial'),
+        patches.Patch(color='red', label='Lymphocyte'),
+        patches.Patch(color='skyblue', label='Plasma'),
+        patches.Patch(color='blue', label='Eosinophil'),
+        patches.Patch(color='yellow', label='Connective tissue'),
     ]
     fig.legend(handles=legend_elements, loc='lower center', ncol=3, 
                bbox_to_anchor=(0.5, 0.02), fontsize=12)
