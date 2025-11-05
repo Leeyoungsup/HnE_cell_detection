@@ -21,7 +21,7 @@ git repositories: https://github.com/Leeyoungsup/HnE_cell_detection
     - 세포 수 기반 **density 분석**,
     - **CPS/TPS 자동점수화 연구** 등 **clinical-grade cell-level 분석에 최적화**
 
-![스크린샷 2025-10-23 153557.png](%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2025-10-23_153557.png)
+![스크린샷 2025-10-23 153557.png](image/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2025-10-23_153557.png)
 
 # Model
 
@@ -31,7 +31,7 @@ git repositories: https://github.com/Leeyoungsup/HnE_cell_detection
 -[https://docs.ultralytics.com/ko/models/yolo11/](https://docs.ultralytics.com/ko/models/yolo11/)
 -[https://github.com/Leeyoungsup/HnE_cell_detection](https://github.com/Leeyoungsup/HnE_cell_detection)
 
-![image.png](image.png)
+![image.png](image/image.png)
 
 # Training (학습 진행중)
 
