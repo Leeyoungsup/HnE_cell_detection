@@ -122,8 +122,7 @@ def compute_metric(output, target, iou_v):
 
 def non_max_suppression(outputs, confidence_threshold=0.001, iou_threshold=0.65):
     max_wh = 7680
-    max_det = 300
-    max_nms = 30000
+
 
     bs = outputs.shape[0]  # batch size
     nc = outputs.shape[1] - 4  # number of classes
@@ -154,13 +153,12 @@ def non_max_suppression(outputs, confidence_threshold=0.001, iou_threshold=0.65)
         n = x.shape[0]  # number of boxes
         if not n:  # no boxes
             continue
-        x = x[x[:, 4].argsort(descending=True)[:max_nms]]  # sort by confidence and remove excess boxes
+        x = x[x[:, 4].argsort(descending=True)]  # sort by confidence and remove excess boxes
 
         # Batched NMS
         c = x[:, 5:6] * max_wh  # classes
         boxes, scores = x[:, :4] + c, x[:, 4]  # boxes, scores
         indices = torchvision.ops.nms(boxes, scores, iou_threshold)  # NMS
-        indices = indices[:max_det]  # limit detections
 
         output[index] = x[indices]
         if (time() - start) > limit:
