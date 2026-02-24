@@ -73,8 +73,13 @@ def plot_training_progress(train_losses, val_det_recalls, val_cls_accs, val_macr
     
     # 7. 클래스별 F1-score (class_stats_history가 있을 경우)
     if class_stats_history is not None and len(class_stats_history) > 0:
-        class_names = ['class_0', 'class_1+', 'class_2+', 'class_3+']
-        class_colors = ['green', 'gold', 'blue', 'red']
+        class_names = ['Neutrophil',
+        'Epithelial',
+        'Lymphocyte',
+        'Plasma',
+        'Eosinophil',
+        'Connective tissue']
+        class_colors = ['red', 'limegreen', 'yellow', 'magenta', 'dodgerblue', 'orange']
         
         # 클래스별 F1 데이터 추출
         for class_idx, (class_name, color) in enumerate(zip(class_names, class_colors)):
@@ -179,23 +184,28 @@ def visualize_ground_truth_and_prediction_separately_single(model, dataset, idx=
     # Subplot 1: Ground Truth (실제 라벨)
     ax1.imshow(img.permute(1, 2, 0).cpu().numpy())
     class_names ={
-    0: "Epithelial",
-    1: "Stromal",
-    2: "Lymphoplasmacytic",
-    3: "Granulocyte",
+   0: 'Neutrophil',
+  1: 'Epithelial',
+  2: 'Lymphocyte',
+  3: 'Plasma',
+  4: 'Eosinophil',
+  5: 'Connective tissue'
     }
 
     class_colors_hex = {
-        "Epithelial": "#FF0000",           # 빨강
-        "Stromal": "#00FF00",              # 초록
-        "Lymphoplasmacytic": "#FFFF00",    # 노랑
-        "Granulocyte": "#1E90FF",          # DodgerBlue (밝은 파랑)
-
+        "Neutrophil": "#FF0000",           # 빨강
+        "Epithelial": "#00FF00",              # 초록
+        "Lymphocyte": "#FFFF00",    # 노랑
+        "Plasma": "#FF00FF",          # 마젠타
+        "Eosinophil": "#1E90FF",          # DodgerBlue (밝은 파랑)
+        "Connective tissue": "#FFA500",          # 오렌지
     }
 
     colors = ["#FF0000","#00FF00",
         "#FFFF00",
+        "#FF00FF",
         "#1E90FF",
+        "#FFA500",
     ]
     for i in range(len(cls)):
         class_id = int(cls[i].item())
@@ -296,23 +306,28 @@ def visualize_ground_truth_and_prediction_separately(model, dataset, idx=0, conf
     # Subplot 1: Ground Truth (실제 라벨)
     ax1.imshow(img.permute(1, 2, 0).cpu().numpy())
     class_names ={
-    0: "Epithelial",
-    1: "Stromal",
-    2: "Lymphoplasmacytic",
-    3: "Granulocyte",
+    0: "Neutrophil",
+    1: "Epithelial",
+    2: "Lymphocyte",
+    3: "Plasma",
+    4: "Eosinophil",
+    5: "Connective tissue"
     }
 
     class_colors_hex = {
-        "Epithelial": "#FF0000",           # 빨강
-        "Stromal": "#00FF00",              # 초록
-        "Lymphoplasmacytic": "#FFFF00",    # 노랑
-        "Granulocyte": "#1E90FF",          # DodgerBlue (밝은 파랑)
-
+        "Neutrophil": "#FF0000",           # 빨강
+        "Epithelial": "#00FF00",              # 초록
+        "Lymphocyte": "#FFFF00",    # 노랑
+        "Plasma": "#FF00FF",          # 마젠타
+        "Eosinophil": "#1E90FF",          # DodgerBlue (밝은 파랑)
+        "Connective tissue": "#FFA500",          # 오렌지
     }
 
     colors = ["#FF0000","#00FF00",
         "#FFFF00",
+        "#FF00FF",
         "#1E90FF",
+        "#FFA500",
     ]
     for i in range(len(cls)):
         class_id = int(cls[i].item())
@@ -1168,12 +1183,12 @@ def visualize_ground_truth_and_prediction_separately_detail_single(model, datase
     # Subplot 1: Ground Truth (실제 라벨)
     ax1.imshow(img.permute(1, 2, 0).cpu().numpy())
     class_names ={
-    0: "Epithelial",
-    1: "Stromal",
+            0: "Neutrophil",
+    1: "Epithelial",
     2: "Lymphocyte",
     3: "Plasma",
-    4: "Neutrophil",
-    5: "Eosinophil",
+    4: "Eosinophil",
+    5: "Connective tissue"
     }
 
 
@@ -1184,14 +1199,6 @@ def visualize_ground_truth_and_prediction_separately_detail_single(model, datase
         "#FFA500",
     ]
 
-    class_colors_hex = {
-        "Epithelial": "#FF0000",           # 빨강
-        "Stromal": "#00FF00",              # 초록
-        "Lymphocyte": "#FFFF00",           # 노랑
-        "Plasma": "#FF00FF",               # 마젠타
-        "Neutrophil": "#1E90FF",           # DodgerBlue (밝은 파랑)
-        "Eosinophil": "#FFA500",           # 오렌지
-    }
     for i in range(len(cls)):
         class_id = int(cls[i].item())
         x_center, y_center, w, h = box[i].tolist()
