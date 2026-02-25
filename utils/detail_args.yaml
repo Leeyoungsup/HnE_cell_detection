@@ -1,10 +1,10 @@
-min_lr: 2e-3            # initial learning rate
-max_lr: 5e-3           # maximum learning rate
+min_lr: 5e-4            # Recall 개선: 너무 높은 min_lr 방지 (overfitting 완화)
+max_lr: 3e-3           # Recall 개선: 초기 학습률 낮춤
 momentum: 0.9370000000            # SGD momentum/Adam beta1
 weight_decay: 0.000500            # optimizer weight decay
 warmup_epochs: 3.00000            # warmup epochs
-box: 7.5   # YOLOv8 기본값
-cls: 1.5   # YOLOv8 기본값
+box: 5.0   # Recall 개선: box loss 가중치 감소
+cls: 2.5   # Recall 개선: cls loss 가중치 증가 (detection 중요도 상승)
 dfl: 0.5 
 hsv_h: 0.0150000000000            # image HSV-Hue augmentation (fraction)
 hsv_s: 0.7000000000000            # image HSV-Saturation augmentation (fraction)
